@@ -52,7 +52,7 @@ const Profile = () => {
                             <div className="mb-8">
                                 <input 
                                     type="text"
-                                    className="lg:absolute text-6xl font-bold mt-4 bg-transparent focus:outline-none" 
+                                    className="max-w-full lg:absolute text-6xl font-bold mt-4 bg-transparent focus:outline-none" 
                                     value={query}
                                     onChange={event => setQuery(event.target.value)}
                                     onKeyDown={(event) => {
