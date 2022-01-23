@@ -47,7 +47,7 @@ const Profile = () => {
                 </div>
             ) : (
                 <div>
-                    <div className="grid lg:grid-cols-5 lg:h-screen">
+                    <div className="lg:grid lg:grid-cols-5 lg:h-screen">
                         <div className="lg:py-16 pl-4 pr-1 lg:pl-24 lg:pt-24 z-10 flex flex-col justify-between">
                             <div className="mb-8">
                                 <input 
