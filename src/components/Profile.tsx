@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import Repo from './Repo';
 
-import { Scrollbars } from 'react-custom-scrollbars-2';
 import { average } from "color.js";
 
 const Profile = () => {
@@ -75,13 +74,11 @@ const Profile = () => {
                         </div>
                         <div className="relative py-16 px-4 lg:pl-24 lg:pt-24 col-span-2 max-h-screen lg:overflow-hidden">
                             <div className="text-lg font-semibold">📋 Repositories</div>
-                            <Scrollbars autoHide={true}>
-                                <div className="w-full max-h-full mt-4 pb-72">
-                                    {
-                                        repos.map((repo, index) => ( <div key={index} className="mb-4"><Repo repo={repo} /></div> ))
-                                    }
-                                </div>
-                            </Scrollbars>
+                            <div className="w-full max-h-full lg:overflow-y-auto mt-4 pb-72">
+                                {
+                                    repos.map((repo, index) => ( <div key={index} className="mb-4"><Repo repo={repo} /></div> ))
+                                }
+                            </div>
                             <div className="absolute bottom-0 bg-gradient-to-t from-black to-transparent w-full h-1/3 hidden lg:block"></div>
                         </div>
                     </div>
