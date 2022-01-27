@@ -10,32 +10,48 @@ const Profile = () => {
     const [query, setQuery] = useState('BriqueAuBob');
     const [url, setUrl] = useState('https://api.github.com/users/BriqueAuBob');
     const [backgroundColor, setBackgroundColor] = useState('#f20f20');
+    const params = new URLSearchParams(window.location.search);
+
+    function setValuesToDefault() {
+        setUser({
+            name: 'Inconnu',
+            avatar_url: 'https://i.stack.imgur.com/frlIf.png',
+            bio: 'I just don\'t exists.',
+            company: '404 Not found'
+        });
+        setRepos([]);
+        setBackgroundColor('#77C5D5');
+        setLoading(false);
+    }
 
     useEffect(() => {
-        async function fetchUser() {
+        const name = params.get('n');
+        console.log(name, query)
+        if(name && name !== 'BriqueAuBob') {
+            setUrl('https://api.github.com/users/' + params.get('n')!);
+            setQuery(params.get('n')!);
+        }
+    }, [window.location.search]);
+
+    useEffect(() => {
+        (async () => {
             setLoading(true);
-            const user = await fetch(url);
-            if(!user.ok) {
-                setUser({
-                    name: 'Inconnu',
-                    avatar_url: 'https://i.stack.imgur.com/frlIf.png',
-                    bio: 'I just don\'t exists.',
-                    company: '404 Not found'
-                });
-                setRepos([]);
-                setBackgroundColor('#77C5D5');
-                setLoading(false);
-                return;
-            };
-            const data = user.json().then(async (data) => {
-                setUser(data);
-                setBackgroundColor(await average(data.avatar_url + '.png', { format: 'hex' }) as string);
-                const repos = await fetch(url + '/repos?per_page=100');
-                setRepos(await repos.json());
-                setLoading(false);
-            })
-        };
-        fetchUser();
+            try {
+                const user = await fetch(url);
+                if(!user.ok) {
+                    throw new Error('User not found');
+                }
+                const data = user.json().then(async (data) => {
+                    setUser(data);
+                    setBackgroundColor(await average(data.avatar_url + '.png', { format: 'hex' }) as string);
+                    const repos = await fetch(url + '/repos?per_page=100');
+                    setRepos(await repos.json());
+                    setLoading(false);
+                })
+            } catch {
+                setValuesToDefault();
+            }
+        })();
     }, [url]);
 
     const style = { '--tw-gradient-from': backgroundColor  } as React.CSSProperties;
